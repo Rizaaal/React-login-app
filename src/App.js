@@ -1,7 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+export function App(){
+  const [user, setUser] = useState(null);
+
+  if (user !== null) {
+    return <WelcomePage currentUser={user} setUser={setUser}/>
+  } else {
+    return <LoginPage setUser={setUser} />
+  }
+}
+
   return (
     <div className="App">
       <header className="App-header">
