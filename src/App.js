@@ -11,6 +11,32 @@ export function App(){
   }
 }
 
+export function LoginPage({ setUser }){
+  const inputRef = useRef(null);
+
+  function logUser(event){
+    setUser(inputRef.current.value);
+  }
+
+  function validate(event){
+    //console.log(event.target.value)
+  }
+
+  return (
+    <section id="login">
+      <h1>Login</h1>
+      <input 
+        ref={inputRef}
+        onChange={validate} 
+        type="text" 
+        placeholder="type a valid e-mail" 
+      />
+      <button onClick={logUser}>enter</button>
+    </section>
+  );
+}
+}
+
   return (
     <div className="App">
       <header className="App-header">
