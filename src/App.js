@@ -3,12 +3,13 @@ import './App.css';
 import { useRef, useState } from 'react';
 
 export function App(){
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(localStorage.getItem("currentUser"));
+  console.log('App() re-rendered.');
 
-  if (user !== null) {
-    return <WelcomePage currentUser={user} setUser={setUser}/>
+  if (user === null) {
+    return <LoginPage setUser={setUser} user={user} />
   } else {
-    return <LoginPage setUser={setUser} />
+    return <WelcomePage currentUser={user} setUser={setUser}/>
   }
 }
 
