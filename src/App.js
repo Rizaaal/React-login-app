@@ -14,17 +14,42 @@ export function App(){
 }
 
 export function LoginPage({ setUser }){
-  const inputRef = useRef(null);
+  const [btn, setBtn] = useState(true);
+  console.log('LoginPage() re-rendered.');
 
-  function logUser(event){
-    setUser(inputRef.current.value);
+  const inputRef = useRef(null);
+  const buttonRef = useRef();
+  
+  function logUser(){
+    const currentUser = inputRef.current.value;
+    const users = JSON.parse(localStorage.getItem("users")) || {};
+
+    localStorage.setItem("currentUser", currentUser);
+    localStorage.setItem("users", JSON.stringify({
+      ...users,
+      [currentUser]: {
+        lastLogin: new Date(), 
+        visits: users[currentUser] ? ++users[currentUser].visits : 1
+      }
+    }));
+
+    setUser(currentUser);
   }
 
-  function validate(event){
-    //console.log(event.target.value)
+  function validate(){
+    const pattern = /[\w-]+@[\w-]+\.[\w]{2,}/;
+    setBtn(!pattern.exec(inputRef.current.value));
   }
 
   return (
+    // 1. utilizzare un form controllato
+    //    ovvero mettere l'attributo value dentro il tag input
+    //    il valore dell'attributo deve essere uguale a una variabile state
+    //    la funzione validate deve chiamare la funzione che cambia lo stato del value
+    //    in questo modo il form è controllato 
+    //    (in realtà facciamo tutto questo per avere un modo per inserire
+    //    il value dentro una variabile state. Questo si puo fare anche con il
+    //    modo corrente, ovvero useRef().
     <section id="login">
       <h1>Login</h1>
       <input 
@@ -33,7 +58,12 @@ export function LoginPage({ setUser }){
         type="text" 
         placeholder="type a valid e-mail" 
       />
-      <button onClick={logUser}>enter</button>
+      <button 
+        onClick={logUser} 
+        disabled={btn}
+        ref={buttonRef}>
+        enter
+      </button>
     </section>
   );
 }
