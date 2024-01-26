@@ -69,15 +69,31 @@ export function LoginPage({ setUser }){
 }
 
 export function WelcomePage({ currentUser, setUser }){
-  const message = 'welcome';
+  const user = JSON.parse(localStorage.getItem("users"))[currentUser];
+  const isOldUser = user.visits > 1;
+
+  const message = isOldUser ? 'Welcome back' : 'Welcome';
+  //JSON porta indietro di 1 ora la data, quindi dobbiamo fare questo:
+  const date = new Date(user.lastLogin).toLocaleString();
 
   function logOut(){
     setUser(null);
+    localStorage.removeItem("currentUser");
 }
 
   return (
     <section id="welcome">
-      <button onClick={logOut}>Logout</button>
+      <nav>
+        <ul>
+          <li><button onClick={logOut}>Logout</button></li>
+          { isOldUser ? ( 
+            <>
+              <li id='lastLogin'>last Login: {date}</li>
+              <li id='visits'>{user.visits}</li>
+            </> 
+          ) : null}
+        </ul>
+      </nav>
       <h1>{message}, {currentUser}</h1>
     </section>
   );
