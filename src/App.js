@@ -1,11 +1,10 @@
-import { render } from '@testing-library/react';
 import './App.css';
 import { useRef, useState } from 'react';
 
 export function App(){
   const [user, setUser] = useState(localStorage.getItem("currentUser"));
   console.log('App() re-rendered.');
-
+  
   if (user === null) {
     return <LoginPage setUser={setUser} user={user} />
   } else {
@@ -79,7 +78,7 @@ export function WelcomePage({ currentUser, setUser }){
   function logOut(){
     setUser(null);
     localStorage.removeItem("currentUser");
-}
+  }
 
   return (
     <section id="welcome">
